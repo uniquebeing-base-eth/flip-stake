@@ -4,6 +4,7 @@ import logo from '@/assets/logo.png';
 import { Loader2, Wallet, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+
 const Header = () => {
   const { connected, stxAddress, connect, disconnect, loading } = useWallet();
   const { price, loading: priceLoading } = useStxPrice();
