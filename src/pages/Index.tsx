@@ -4,6 +4,7 @@ import { Flame, Sparkles } from 'lucide-react';
 import { MOCK_FLIPS } from '@/lib/mock-data';
 import FlipCard from '@/components/FlipCard';
 import CreateFlipModal from '@/components/CreateFlipModal';
+import StxPriceChart from '@/components/StxPriceChart';
 
 const Index = () => {
   const [filter, setFilter] = useState<'all' | 'active' | 'resolved'>('all');
@@ -40,6 +41,11 @@ const Index = () => {
             </p>
           </motion.div>
         </div>
+      </section>
+
+      {/* STX Price Chart */}
+      <section className="container mx-auto px-4 pt-8 pb-2">
+        <StxPriceChart />
       </section>
 
       {/* Flips */}
