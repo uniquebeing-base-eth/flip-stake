@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchStxPrice } from '@/lib/stx-price';
 
+
 export function useStxPrice() {
   const [price, setPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
