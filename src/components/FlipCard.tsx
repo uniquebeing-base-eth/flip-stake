@@ -5,6 +5,7 @@ import type { Flip } from '@/lib/mock-data';
 import { CURRENT_BLOCK } from '@/lib/mock-data';
 import PoolBar from './PoolBar';
 
+
 interface FlipCardProps {
   flip: Flip;
   index: number;
