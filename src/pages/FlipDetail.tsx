@@ -9,6 +9,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import PoolBar from '@/components/PoolBar';
 import { toast } from 'sonner';
 
+
 const FlipDetail = () => {
   const { id } = useParams();
   const flip = MOCK_FLIPS.find((f) => f.id === Number(id));
