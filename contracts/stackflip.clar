@@ -1,3 +1,4 @@
+
 ;; StackFlip - Yes/No Prediction Market
 ;; Version: 1.0.0
 ;; A simple binary prediction market on Stacks where users stake STX on outcomes
