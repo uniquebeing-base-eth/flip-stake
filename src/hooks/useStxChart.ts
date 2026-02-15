@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+
 export interface PricePoint {
   timestamp: number;
   price: number;
