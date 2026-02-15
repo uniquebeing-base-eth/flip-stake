@@ -5,6 +5,7 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 import { useStxChart, type TimeRange } from '@/hooks/useStxChart';
 import { useStxPrice } from '@/hooks/useStxPrice';
 
+
 const RANGES: TimeRange[] = ['1D', '7D', '30D', '90D'];
 
 const StxPriceChart = () => {
