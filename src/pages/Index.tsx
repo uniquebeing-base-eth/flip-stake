@@ -6,6 +6,7 @@ import FlipCard from '@/components/FlipCard';
 import CreateFlipModal from '@/components/CreateFlipModal';
 import StxPriceChart from '@/components/StxPriceChart';
 
+
 const Index = () => {
   const [filter, setFilter] = useState<'all' | 'active' | 'resolved'>('all');
 
