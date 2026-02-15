@@ -5,6 +5,7 @@ interface PoolBarProps {
   noAmount: number;
 }
 
+
 const PoolBar = ({ yesAmount, noAmount }: PoolBarProps) => {
   const total = yesAmount + noAmount;
   const yesPct = total > 0 ? (yesAmount / total) * 100 : 50;
