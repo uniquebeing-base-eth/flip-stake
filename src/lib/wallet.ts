@@ -1,5 +1,6 @@
 import { connect, disconnect, isConnected, getLocalStorage, request } from '@stacks/connect';
 
+
 export interface WalletState {
   connected: boolean;
   stxAddress: string | null;
