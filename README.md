@@ -1,73 +1,182 @@
-# Welcome to your Lovable project
+# StackFlip
 
-## Project info
+StackFlip is a simple onchain Yes or No prediction market built on the Stacks blockchain.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Users stake STX on an outcome.
+After the deadline, the winning side splits the total pool.
 
-## How can I edit this code?
+No tokens. No NFTs. Just STX.
 
-There are several ways of editing your application.
 
-**Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+What is StackFlip
 
-Changes made via Lovable will be committed automatically to this repo.
+StackFlip allows anyone to:
+	•	Create a prediction question
+	•	Stake STX on Yes or No
+	•	Win proportional rewards if correct
+	•	Claim winnings directly from the contract
 
-**Use your preferred IDE**
+All logic is executed fully onchain using Clarity smart contracts.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
+How It Works
+	1.	A user creates a flip with:
+	•	A Yes or No question
+	•	A deadline block height
+	2.	Other users stake STX on:
+	•	Yes
+	•	No
+	3.	After the deadline:
+	•	The flip is resolved
+	•	Winning side is declared
+	4.	Users who staked on the winning side:
+	•	Claim rewards
+	•	Receive proportional share of the total pool
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+Features
+	•	Stacks wallet connection
+	•	STX-only staking
+	•	Onchain reward distribution
+	•	Proportional payouts
+	•	Manual resolution for MVP
+	•	Optional platform fee
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+
+
+# Tech Stack
+	•	Blockchain: Stacks
+	•	Smart Contract: Clarity
+	•	Frontend: React or Next.js
+	•	Wallet Integration: Stacks Connect
+	•	Network: Testnet and Mainnet
+
+
+
+# Smart Contract Overview
+
+Core Functions
+	•	create-flip
+Creates a new Yes or No prediction.
+	•	stake-yes
+Stakes STX on Yes.
+	•	stake-no
+Stakes STX on No.
+	•	resolve-flip
+Resolves the outcome after deadline.
+	•	claim-reward
+Allows winners to claim their payout.
+
+
+
+Contract Rules
+	•	No staking after deadline
+	•	No claiming before resolution
+	•	Only winning side can claim
+	•	Double claims are prevented
+	•	All funds remain locked in contract until claimed
+
+
+
+Platform Fee 
+
+The contract may take a small percentage from the total pool to sustain development.
+
+Example:
+2 percent of total pool sent to contract deployer.
+
+
+
+# Frontend Pages
+
+Home
+	•	List of active flips
+	•	Time remaining
+	•	Total pool size
+
+Flip Page
+	•	Question display
+	•	Total Yes and No stakes
+	•	Percentage bars
+	•	Stake input
+	•	Yes and No buttons
+
+Post Resolution
+	•	Winning side display
+	•	Claim button for eligible users
+
+
+
+Local Development
+
+Requirements
+	•	Node.js
+	•	npm or yarn
+	•	Clarinet
+	•	Leather or Hiro wallet
+
+⸻
+
+Install
+
+git clone https://github.com/your-username/stackflip.git
+cd stackflip
+npm install
+
+
+
+
+Run Frontend
+
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
+Smart Contract Checks
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+clarinet check
+clarinet test
 
-## What technologies are used for this project?
 
-This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Deployment
+	1.	Deploy contract to Stacks testnet
+	2.	Update contract address in frontend
+	3.	Test wallet interactions
+	4.	Deploy frontend
+	5.	Deploy to mainnet
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
+# Security Notes
+	•	Clarity prevents reentrancy issues
+	•	Only valid claimers receive rewards
+	•	Deadline logic prevents late manipulation
+	•	All reward logic handled onchain
 
-Yes, you can!
+⸻
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Roadmap
+	•	Oracle integration
+	•	Automated resolution
+	•	Leaderboard
+	•	Advanced fee models
+	•	Multi-option predictions
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+
+# License
+
+MIT License
+
+
+
+# Built on Stacks
+
+StackFlip is designed to increase onchain STX activity and demonstrate simple, transparent prediction markets secured by Bitcoin.
+
+
+
