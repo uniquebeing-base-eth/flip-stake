@@ -9,7 +9,7 @@ No tokens. No NFTs. Just STX.
 
 
 
-What is StackFlip
+# What is StackFlip
 
 StackFlip allows anyone to:
 	•	Create a prediction question
@@ -21,7 +21,7 @@ All logic is executed fully onchain using Clarity smart contracts.
 
 
 
-How It Works
+# How It Works
 	1.	A user creates a flip with:
 	•	A Yes or No question
 	•	A deadline block height
@@ -122,7 +122,7 @@ Requirements
 
 Install
 
-git clone https://github.com/your-username/stackflip.git
+git clone https://github.com/uniquebeing-base-eth/flip-stake.git
 cd stackflip
 npm install
 
