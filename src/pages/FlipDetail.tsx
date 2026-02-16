@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Trophy, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Trophy, Clock, CheckCircle, XCircle, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MOCK_FLIPS, CURRENT_BLOCK } from '@/lib/mock-data';
 import { useWallet } from '@/contexts/WalletContext';
+import { shareOnTwitter } from '@/lib/share';
 import PoolBar from '@/components/PoolBar';
 import { toast } from 'sonner';
 
@@ -158,10 +159,21 @@ const FlipDetail = () => {
           </Button>
         )}
 
-        {/* Creator */}
-        <div className="mt-6 pt-4 border-t border-border text-xs text-muted-foreground">
-          Created by <span className="font-mono">{flip.creator.slice(0, 8)}…{flip.creator.slice(-4)}</span>
-          {' · '}Flip #{flip.id}
+        {/* Footer */}
+        <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">
+          <div className="text-xs text-muted-foreground">
+            Created by <span className="font-mono">{flip.creator.slice(0, 8)}…{flip.creator.slice(-4)}</span>
+            {' · '}Flip #{flip.id}
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5 text-muted-foreground hover:text-primary"
+            onClick={() => shareOnTwitter({ question: flip.question, flipId: flip.id })}
+          >
+            <Share2 className="h-4 w-4" />
+            Share on X
+          </Button>
         </div>
       </motion.div>
     </div>

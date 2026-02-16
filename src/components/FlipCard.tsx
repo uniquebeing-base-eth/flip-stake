@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, Trophy, TrendingUp } from 'lucide-react';
+import { Clock, Trophy, TrendingUp, Share2 } from 'lucide-react';
 import type { Flip } from '@/lib/mock-data';
 import { CURRENT_BLOCK } from '@/lib/mock-data';
+import { shareOnTwitter } from '@/lib/share';
 import PoolBar from './PoolBar';
 
 
@@ -55,13 +56,28 @@ const FlipCard = ({ flip, index }: FlipCardProps) => {
           {/* Pool bar */}
           <PoolBar yesAmount={flip.totalYesStake} noAmount={flip.totalNoStake} />
 
-          {/* Time remaining */}
-          {isActive && (
-            <div className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Clock className="h-3 w-3" />
-              ~{blocksLeft.toLocaleString()} blocks remaining
-            </div>
-          )}
+          {/* Bottom row */}
+          <div className="mt-3 flex items-center justify-between">
+            {isActive && (
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                ~{blocksLeft.toLocaleString()} blocks remaining
+              </div>
+            )}
+            {!isActive && <div />}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                shareOnTwitter({ question: flip.question, flipId: flip.id });
+              }}
+              className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+              title="Share on X"
+            >
+              <Share2 className="h-3 w-3" />
+              Share
+            </button>
+          </div>
         </div>
       </Link>
     </motion.div>

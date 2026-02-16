@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Flame, Sparkles } from 'lucide-react';
+import { Flame, Sparkles, User } from 'lucide-react';
 import { MOCK_FLIPS } from '@/lib/mock-data';
 import FlipCard from '@/components/FlipCard';
 import CreateFlipModal from '@/components/CreateFlipModal';
 import StxPriceChart from '@/components/StxPriceChart';
+import Portfolio from '@/components/Portfolio';
 
 
 const Index = () => {
@@ -47,6 +48,15 @@ const Index = () => {
       {/* STX Price Chart */}
       <section className="container mx-auto px-4 pt-8 pb-2">
         <StxPriceChart />
+      </section>
+
+      {/* My Portfolio */}
+      <section className="container mx-auto px-4 py-8">
+        <div className="mb-4 flex items-center gap-2">
+          <User className="h-5 w-5 text-primary" />
+          <h2 className="font-display text-2xl font-bold">My Portfolio</h2>
+        </div>
+        <Portfolio />
       </section>
 
       {/* Flips */}
