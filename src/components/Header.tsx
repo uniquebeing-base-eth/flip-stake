@@ -28,11 +28,13 @@ const Header = () => {
           </div>
 
           {/* Wallet */}
-          {connected && stxAddress ? (
+          {connected ? (
             <div className="flex items-center gap-2">
-              <span className="hidden rounded-lg bg-secondary px-3 py-1.5 text-sm font-mono text-foreground sm:inline-block">
-                {truncateAddr(stxAddress)}
-              </span>
+              {stxAddress && (
+                <span className="hidden rounded-lg bg-secondary px-3 py-1.5 text-sm font-mono text-foreground sm:inline-block">
+                  {truncateAddr(stxAddress)}
+                </span>
+              )}
               <Button variant="outline" size="sm" onClick={disconnect} className="gap-1.5">
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">Disconnect</span>
