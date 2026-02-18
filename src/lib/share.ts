@@ -1,6 +1,6 @@
 export function shareOnTwitter(params: { question: string; flipId: number; side?: 'yes' | 'no' }) {
   const { question, flipId, side } = params;
-  const baseUrl = window.location.origin;
+  const baseUrl = 'https://flip-stake.vercel.app';
   const flipUrl = `${baseUrl}/flip/${flipId}`;
   
   let text: string;
