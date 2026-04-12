@@ -3,12 +3,12 @@ import { useWallet } from '@/contexts/WalletContext';
 import { useStxPrice } from '@/hooks/useStxPrice';
 import logo from '@/assets/logo.png';
 import signalifyIcon from '@/assets/signalify-icon.png';
-import { Loader2, LogOut } from 'lucide-react';
+import { Loader2, LogOut, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 
 const Header = () => {
-  const { connected, stxAddress, connect, disconnect, loading, authenticated, user } = useWallet();
+  const { connected, stxAddress, connect, signInWithSignalify, disconnect, loading, signingIn, authenticated, user } = useWallet();
   const { price, loading: priceLoading } = useStxPrice();
 
   const truncateAddr = (addr: string) => `${addr.slice(0, 6)}…${addr.slice(-4)}`;
@@ -42,24 +42,58 @@ const Header = () => {
                   Verified
                 </span>
               )}
+              {/* If wallet connected but not Signalify-authenticated, offer sign-in */}
+              {!authenticated && (
+                <Button
+                  onClick={signInWithSignalify}
+                  disabled={signingIn}
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                >
+                  {signingIn ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <img src={signalifyIcon} alt="" className="h-4 w-4" loading="lazy" width={16} height={16} />
+                  )}
+                  <span className="hidden sm:inline">Sign in</span>
+                </Button>
+              )}
               <Button variant="outline" size="sm" onClick={disconnect} className="gap-1.5">
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">Disconnect</span>
               </Button>
             </div>
           ) : (
-            <Button
-              onClick={connect}
-              disabled={loading}
-              className="gap-2 bg-[#7c3aed] text-white hover:bg-[#6d28d9] border-0"
-            >
-              {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <img src={signalifyIcon} alt="" className="h-5 w-5" loading="lazy" width={20} height={20} />
-              )}
-              Sign in with Signalify
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* Primary: Connect Wallet */}
+              <Button
+                onClick={connect}
+                disabled={loading}
+                className="gap-2"
+              >
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Wallet className="h-4 w-4" />
+                )}
+                Connect Wallet
+              </Button>
+              {/* Secondary: Sign in with Signalify */}
+              <Button
+                onClick={signInWithSignalify}
+                disabled={signingIn}
+                variant="outline"
+                className="gap-2"
+              >
+                {signingIn ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <img src={signalifyIcon} alt="" className="h-5 w-5" loading="lazy" width={20} height={20} />
+                )}
+                <span className="hidden sm:inline">Sign in with Signalify</span>
+              </Button>
+            </div>
           )}
         </div>
       </div>

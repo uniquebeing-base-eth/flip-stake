@@ -11,8 +11,10 @@ interface SignalifyUser {
 
 interface WalletContextType extends WalletState {
   connect: () => Promise<void>;
+  signInWithSignalify: () => Promise<void>;
   disconnect: () => void;
   loading: boolean;
+  signingIn: boolean;
   authenticated: boolean;
   user: SignalifyUser | null;
 }
@@ -21,8 +23,10 @@ const WalletContext = createContext<WalletContextType>({
   connected: false,
   stxAddress: null,
   connect: async () => {},
+  signInWithSignalify: async () => {},
   disconnect: () => {},
   loading: false,
+  signingIn: false,
   authenticated: false,
   user: null,
 });
@@ -32,16 +36,15 @@ export const useWallet = () => useContext(WalletContext);
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, setState] = useState<WalletState>({ connected: false, stxAddress: null });
   const [loading, setLoading] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState<SignalifyUser | null>(null);
   const { toast } = useToast();
 
-  // Check existing session on mount
   useEffect(() => {
     const ws = getWalletState();
     setState(ws);
 
-    // Check if we already have a Supabase session (from Signalify)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setAuthenticated(true);
@@ -72,23 +75,49 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return () => subscription.unsubscribe();
   }, []);
 
+  // Primary: just connect wallet, no Signalify auth
   const handleConnect = useCallback(async () => {
     setLoading(true);
     try {
-      // Step 1: Connect wallet
       const ws = await connectWallet();
       setState(ws);
+      if (!ws.stxAddress) {
+        throw new Error('No STX address found');
+      }
+      toast({
+        title: 'Wallet connected',
+        description: `Connected as ${ws.stxAddress.slice(0, 6)}…${ws.stxAddress.slice(-4)}`,
+      });
+    } catch (e: any) {
+      console.error('Wallet connection failed:', e);
+      toast({
+        title: 'Connection failed',
+        description: e?.message || 'Could not connect wallet',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
+
+  // Secondary: connect wallet + authenticate via Signalify
+  const handleSignInWithSignalify = useCallback(async () => {
+    setSigningIn(true);
+    try {
+      // Ensure wallet is connected first
+      let ws = state;
+      if (!state.connected || !state.stxAddress) {
+        ws = await connectWallet();
+        setState(ws);
+      }
 
       if (!ws.stxAddress) {
         throw new Error('No STX address found');
       }
 
-      // Step 2: Sign message for Signalify auth
       const authMessage = `Welcome to StackFlip!\nSign this message to verify your wallet ownership.\nAddress: ${ws.stxAddress}\nTimestamp: ${Date.now()}`;
-      
       const { signature } = await signMessage(authMessage);
 
-      // Step 3: Authenticate via Signalify edge function
       const { data, error } = await supabase.functions.invoke('signalify-auth', {
         body: {
           address: ws.stxAddress,
@@ -101,7 +130,6 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         throw new Error(error.message || 'Authentication failed');
       }
 
-      // Step 4: Set the Supabase session with Signalify tokens
       if (data?.session) {
         await supabase.auth.setSession({
           access_token: data.session.access_token,
@@ -114,16 +142,16 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         });
       }
     } catch (e: any) {
-      console.error('Wallet connection/auth failed:', e);
+      console.error('Signalify sign-in failed:', e);
       toast({
-        title: 'Connection failed',
-        description: e?.message || 'Could not connect wallet',
+        title: 'Sign in failed',
+        description: e?.message || 'Could not sign in with Signalify',
         variant: 'destructive',
       });
     } finally {
-      setLoading(false);
+      setSigningIn(false);
     }
-  }, [toast]);
+  }, [toast, state]);
 
   const handleDisconnect = useCallback(async () => {
     disconnectWallet();
@@ -138,8 +166,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       value={{
         ...state,
         connect: handleConnect,
+        signInWithSignalify: handleSignInWithSignalify,
         disconnect: handleDisconnect,
         loading,
+        signingIn,
         authenticated,
         user,
       }}
