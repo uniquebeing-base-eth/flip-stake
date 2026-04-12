@@ -2,7 +2,8 @@
 import { useWallet } from '@/contexts/WalletContext';
 import { useStxPrice } from '@/hooks/useStxPrice';
 import logo from '@/assets/logo.png';
-import { Loader2, Wallet, LogOut } from 'lucide-react';
+import signalifyIcon from '@/assets/signalify-icon.png';
+import { Loader2, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 
@@ -28,7 +29,7 @@ const Header = () => {
             </span>
           </div>
 
-          {/* Wallet */}
+          {/* Auth State */}
           {connected ? (
             <div className="flex items-center gap-2">
               {(user?.username || stxAddress) && (
@@ -37,7 +38,7 @@ const Header = () => {
                 </span>
               )}
               {authenticated && (
-                <span className="hidden rounded-full bg-green-500/20 px-2 py-0.5 text-xs text-green-400 sm:inline-block">
+                <span className="hidden rounded-full bg-accent/20 px-2 py-0.5 text-xs text-accent-foreground sm:inline-block">
                   Verified
                 </span>
               )}
@@ -47,9 +48,17 @@ const Header = () => {
               </Button>
             </div>
           ) : (
-            <Button onClick={connect} disabled={loading} className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wallet className="h-4 w-4" />}
-              Connect Wallet
+            <Button
+              onClick={connect}
+              disabled={loading}
+              className="gap-2 bg-[#7c3aed] text-white hover:bg-[#6d28d9] border-0"
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <img src={signalifyIcon} alt="" className="h-5 w-5" loading="lazy" width={20} height={20} />
+              )}
+              Sign in with Signalify
             </Button>
           )}
         </div>
