@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 
 const Header = () => {
-  const { connected, stxAddress, connect, disconnect, loading } = useWallet();
+  const { connected, stxAddress, connect, disconnect, loading, authenticated, user } = useWallet();
   const { price, loading: priceLoading } = useStxPrice();
 
   const truncateAddr = (addr: string) => `${addr.slice(0, 6)}…${addr.slice(-4)}`;
@@ -31,9 +31,14 @@ const Header = () => {
           {/* Wallet */}
           {connected ? (
             <div className="flex items-center gap-2">
-              {stxAddress && (
+              {(user?.username || stxAddress) && (
                 <span className="hidden rounded-lg bg-secondary px-3 py-1.5 text-sm font-mono text-foreground sm:inline-block">
-                  {truncateAddr(stxAddress)}
+                  {user?.username ? `@${user.username}` : stxAddress ? truncateAddr(stxAddress) : ''}
+                </span>
+              )}
+              {authenticated && (
+                <span className="hidden rounded-full bg-green-500/20 px-2 py-0.5 text-xs text-green-400 sm:inline-block">
+                  Verified
                 </span>
               )}
               <Button variant="outline" size="sm" onClick={disconnect} className="gap-1.5">
